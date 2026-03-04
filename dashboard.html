@@ -3,110 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Agrikura</title>
+    <title>Administration | Agrikura</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <nav class="navbar">
         <a href="/" class="logo">Agrikura<span class="dot">.</span></a>
         <ul class="nav-links">
             <li><a href="/">Accueil</a></li>
             <li><a href="/marketplace.html">Marketplace</a></li>
-            <li><a href="/dashboard.html" style="color: var(--accent-color);">Mon Espace</a></li>
+            <li><a href="/dashboard.html" style="color: var(--accent-color);">Admin</a></li>
         </ul>
     </nav>
 
     <main class="dashboard-page">
         <div class="dashboard-header">
-            <h1>Bienvenue, <span class="highlight" id="user-name">...</span></h1>
-            <button class="btn-logout" id="btn-logout">Déconnexion</button>
+            <h1>Espace <span class="highlight">Administration</span></h1>
+            <div class="dashboard-actions">
+                <button class="btn-export" id="btn-export-agri">📄 PDF Agriculteurs</button>
+                <button class="btn-export" id="btn-export-inv">📄 PDF Investisseurs</button>
+                <button class="btn-logout" id="btn-logout">Déconnexion</button>
+            </div>
         </div>
 
-        <div class="dashboard-grid">
-            <div class="profile-card">
-                <div class="profile-avatar" id="profile-avatar">?</div>
-                <h3 id="profile-name">Chargement...</h3>
-                <p class="profile-email" id="profile-email"></p>
-                <div class="profile-info">
-                    <div class="profile-info-item">
-                        <span>📞 Téléphone</span>
-                        <span id="profile-tel">—</span>
-                    </div>
-                    <div class="profile-info-item">
-                        <span>📍 Ville</span>
-                        <span id="profile-ville">—</span>
-                    </div>
-                    <div class="profile-info-item">
-                        <span>📅 Membre depuis</span>
-                        <span id="profile-date">—</span>
-                    </div>
-                </div>
+        <!-- Stats rapides -->
+        <div class="admin-stats" id="admin-stats">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">🌾</div>
+                <div class="admin-stat-value" id="count-agri">—</div>
+                <div class="admin-stat-label">Agriculteurs inscrits</div>
             </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">💰</div>
+                <div class="admin-stat-value" id="count-inv">—</div>
+                <div class="admin-stat-label">Investisseurs inscrits</div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">📊</div>
+                <div class="admin-stat-value" id="total-besoin">—</div>
+                <div class="admin-stat-label">Total Besoin Financement</div>
+            </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">🏦</div>
+                <div class="admin-stat-value" id="total-capacite">—</div>
+                <div class="admin-stat-label">Total Capacité Investissement</div>
+            </div>
+        </div>
 
-            <div class="investments-panel">
-                <h2>Mes <span class="highlight">Investissements</span></h2>
-                <div class="investment-list" id="investment-list">
-                    <div class="loading-spinner"><div class="spinner"></div><p>Chargement...</p></div>
-                </div>
-            </div>
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" id="tab-agri">🌾 Agriculteurs</button>
+            <button class="admin-tab" id="tab-inv">💰 Investisseurs</button>
+        </div>
+
+        <!-- Table Agriculteurs -->
+        <div class="admin-table-container" id="panel-agri">
+            <table class="admin-table" id="table-agri">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Culture</th>
+                        <th>Capacité Champ</th>
+                        <th>Besoin (FCFA)</th>
+                        <th>En activité</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-agri">
+                    <tr><td colspan="9" class="loading-cell">Chargement...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Table Investisseurs -->
+        <div class="admin-table-container" id="panel-inv" style="display: none;">
+            <table class="admin-table" id="table-inv">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Capacité (FCFA)</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-inv">
+                    <tr><td colspan="6" class="loading-cell">Chargement...</td></tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
     <script type="module">
-        import { requireAuth, getProfil, deconnexion } from './auth.js';
+        import { requireAuth, deconnexion } from './auth.js';
         import { supabase } from './db.js';
+        import jsPDF from 'jspdf';
+        import 'jspdf-autotable';
 
-        const user = await requireAuth();
-        if (!user) throw new Error('Non authentifié');
+        (async () => {
+            const user = await requireAuth();
+            if (!user) return;
 
-        // Charger le profil
-        const profil = await getProfil(user.id);
-        const nom = profil?.nom_complet || user.email.split('@')[0];
+            // Charger les données
+            const [agriRes, invRes] = await Promise.all([
+                supabase.from('inscriptions_agriculteurs').select('*').order('created_at', { ascending: false }),
+                supabase.from('inscriptions_investisseurs').select('*').order('created_at', { ascending: false })
+            ]);
 
-        document.getElementById('user-name').textContent = nom;
-        document.getElementById('profile-name').textContent = nom;
-        document.getElementById('profile-email').textContent = user.email;
-        document.getElementById('profile-avatar').textContent = nom.charAt(0).toUpperCase();
-        document.getElementById('profile-tel').textContent = profil?.telephone || '—';
-        document.getElementById('profile-ville').textContent = profil?.ville || '—';
-        document.getElementById('profile-date').textContent = new Date(user.created_at).toLocaleDateString('fr-FR');
+            const agriculteurs = agriRes.data || [];
+            const investisseurs = invRes.data || [];
 
-        // Charger les investissements
-        const { data: investissements } = await supabase
-            .from('investissements')
-            .select('*, projets(titre)')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false });
+            // Stats
+            document.getElementById('count-agri').textContent = agriculteurs.length;
+            document.getElementById('count-inv').textContent = investisseurs.length;
+            const totalBesoin = agriculteurs.reduce((s, a) => s + (a.besoin_financement || 0), 0);
+            const totalCapacite = investisseurs.reduce((s, i) => s + (i.capacite_financement || 0), 0);
+            document.getElementById('total-besoin').textContent = totalBesoin.toLocaleString('fr-FR') + ' FCFA';
+            document.getElementById('total-capacite').textContent = totalCapacite.toLocaleString('fr-FR') + ' FCFA';
 
-        const listEl = document.getElementById('investment-list');
+            // Render Agriculteurs
+            const tbodyAgri = document.getElementById('tbody-agri');
+            if (agriculteurs.length === 0) {
+                tbodyAgri.innerHTML = '<tr><td colspan="9" class="loading-cell">Aucun agriculteur inscrit.</td></tr>';
+            } else {
+                tbodyAgri.innerHTML = agriculteurs.map(a => `
+                    <tr>
+                        <td>${a.nom}</td>
+                        <td>${a.prenom}</td>
+                        <td>${a.contact}</td>
+                        <td>${a.email || '—'}</td>
+                        <td><span class="table-badge">${a.type_culture}</span></td>
+                        <td>${a.capacite_champs}</td>
+                        <td class="text-right">${(a.besoin_financement || 0).toLocaleString('fr-FR')}</td>
+                        <td>${a.en_activite ? '✅ Oui' : '❌ Non'}</td>
+                        <td>${new Date(a.created_at).toLocaleDateString('fr-FR')}</td>
+                    </tr>
+                `).join('');
+            }
 
-        if (!investissements || investissements.length === 0) {
-            listEl.innerHTML = `
-                <div class="no-investments">
-                    <p>Vous n'avez pas encore d'investissement.</p>
-                    <p><a href="/marketplace.html">Explorer les projets →</a></p>
-                </div>`;
-        } else {
-            listEl.innerHTML = investissements.map(inv => `
-                <div class="investment-row">
-                    <div>
-                        <div class="inv-projet">${inv.projets?.titre || 'Projet'}</div>
-                        <div class="inv-date">${new Date(inv.created_at).toLocaleDateString('fr-FR')}</div>
-                    </div>
-                    <div class="inv-montant">${inv.montant.toLocaleString('fr-FR')} FCFA</div>
-                    <span class="inv-statut ${inv.statut}">${inv.statut === 'en_attente' ? '⏳ En attente' : '✅ Confirmé'}</span>
-                </div>
-            `).join('');
-        }
+            // Render Investisseurs
+            const tbodyInv = document.getElementById('tbody-inv');
+            if (investisseurs.length === 0) {
+                tbodyInv.innerHTML = '<tr><td colspan="6" class="loading-cell">Aucun investisseur inscrit.</td></tr>';
+            } else {
+                tbodyInv.innerHTML = investisseurs.map(i => `
+                    <tr>
+                        <td>${i.nom}</td>
+                        <td>${i.prenom}</td>
+                        <td>${i.contact}</td>
+                        <td>${i.email || '—'}</td>
+                        <td class="text-right">${(i.capacite_financement || 0).toLocaleString('fr-FR')}</td>
+                        <td>${new Date(i.created_at).toLocaleDateString('fr-FR')}</td>
+                    </tr>
+                `).join('');
+            }
 
-        // Déconnexion
-        document.getElementById('btn-logout').addEventListener('click', async () => {
-            await deconnexion();
-            window.location.href = '/';
-        });
+            // Tabs
+            const tabAgri = document.getElementById('tab-agri');
+            const tabInv = document.getElementById('tab-inv');
+            const panelAgri = document.getElementById('panel-agri');
+            const panelInv = document.getElementById('panel-inv');
+
+            tabAgri.addEventListener('click', () => {
+                tabAgri.classList.add('active');
+                tabInv.classList.remove('active');
+                panelAgri.style.display = 'block';
+                panelInv.style.display = 'none';
+            });
+            tabInv.addEventListener('click', () => {
+                tabInv.classList.add('active');
+                tabAgri.classList.remove('active');
+                panelInv.style.display = 'block';
+                panelAgri.style.display = 'none';
+            });
+
+            // Export PDF Agriculteurs
+            document.getElementById('btn-export-agri').addEventListener('click', () => {
+                const doc = new jsPDF({ orientation: 'landscape' });
+                doc.setFontSize(18);
+                doc.text('Agrikura — Liste des Agriculteurs', 14, 22);
+                doc.setFontSize(10);
+                doc.text('Généré le ' + new Date().toLocaleDateString('fr-FR'), 14, 30);
+                doc.text('Total: ' + agriculteurs.length + ' agriculteurs — Besoin total: ' + totalBesoin.toLocaleString('fr-FR') + ' FCFA', 14, 36);
+
+                doc.autoTable({
+                    startY: 42,
+                    head: [['Nom', 'Prénom', 'Contact', 'Email', 'Culture', 'Capacité Champ', 'Besoin (FCFA)', 'En activité', 'Date']],
+                    body: agriculteurs.map(a => [
+                        a.nom, a.prenom, a.contact, a.email || '—',
+                        a.type_culture, a.capacite_champs,
+                        (a.besoin_financement || 0).toLocaleString('fr-FR'),
+                        a.en_activite ? 'Oui' : 'Non',
+                        new Date(a.created_at).toLocaleDateString('fr-FR')
+                    ]),
+                    styles: { fontSize: 8, cellPadding: 3 },
+                    headStyles: { fillColor: [46, 125, 50], textColor: 255 },
+                    alternateRowStyles: { fillColor: [240, 245, 240] }
+                });
+
+                doc.save('agrikura-agriculteurs.pdf');
+            });
+
+            // Export PDF Investisseurs
+            document.getElementById('btn-export-inv').addEventListener('click', () => {
+                const doc = new jsPDF();
+                doc.setFontSize(18);
+                doc.text('Agrikura — Liste des Investisseurs', 14, 22);
+                doc.setFontSize(10);
+                doc.text('Généré le ' + new Date().toLocaleDateString('fr-FR'), 14, 30);
+                doc.text('Total: ' + investisseurs.length + ' investisseurs — Capacité totale: ' + totalCapacite.toLocaleString('fr-FR') + ' FCFA', 14, 36);
+
+                doc.autoTable({
+                    startY: 42,
+                    head: [['Nom', 'Prénom', 'Contact', 'Email', 'Capacité (FCFA)', 'Date']],
+                    body: investisseurs.map(i => [
+                        i.nom, i.prenom, i.contact, i.email || '—',
+                        (i.capacite_financement || 0).toLocaleString('fr-FR'),
+                        new Date(i.created_at).toLocaleDateString('fr-FR')
+                    ]),
+                    styles: { fontSize: 9, cellPadding: 4 },
+                    headStyles: { fillColor: [46, 125, 50], textColor: 255 },
+                    alternateRowStyles: { fillColor: [240, 245, 240] }
+                });
+
+                doc.save('agrikura-investisseurs.pdf');
+            });
+
+            // Déconnexion
+            document.getElementById('btn-logout').addEventListener('click', async () => {
+                await deconnexion();
+                window.location.href = '/';
+            });
+        })();
     </script>
 </body>
 </html>

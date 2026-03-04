@@ -1,25 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agrikura | Investissez dans l&#39;Agriculture Connectée</title>
-    <meta name="description" content="Plateforme d&#39;investissement agricole connectée en Côte d&#39;Ivoire. Financez des projets réels, suivez les rendements via IoT.">
+    <title>Agrikura | Rejoignez l'Agriculture de Demain</title>
+    <meta name="description" content="Inscrivez-vous comme agriculteur ou investisseur sur Agrikura, la plateforme d'investissement agricole connectée en Côte d'Ivoire.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="new-sections.css">
     <link rel="stylesheet" href="auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <meta property="og:title" content="Agrikura | Investissez dans l&#39;Agriculture Connectée">
-  <meta name="twitter:title" content="Agrikura | Investissez dans l&#39;Agriculture Connectée">
-  <meta property="og:description" content="Plateforme d&#39;investissement agricole connectée en Côte d&#39;Ivoire. Financez des projets réels, suivez les rendements via IoT.">
-  <meta name="twitter:description" content="Plateforme d&#39;investissement agricole connectée en Côte d&#39;Ivoire. Financez des projets réels, suivez les rendements via IoT.">
-  <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a2c50596-7829-4397-aee4-5b881c75aae7/id-preview-d060e5c1--7270d706-8e0d-4a40-8d01-375977d90d50.lovable.app-1772332509455.png">
-  <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a2c50596-7829-4397-aee4-5b881c75aae7/id-preview-d060e5c1--7270d706-8e0d-4a40-8d01-375977d90d50.lovable.app-1772332509455.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:type" content="website">
 </head>
-
 <body>
 
     <!-- Navigation -->
@@ -34,32 +24,150 @@
             <li><a href="#concept">Le Concept</a></li>
             <li><a href="/marketplace.html">Marketplace</a></li>
             <li><a href="#statistics">Impact</a></li>
-            <li><a href="#team">Équipe</a></li>
-            <li><a href="#risk-guarantees">Sécurité</a></li>
             <li><a href="#faq">FAQ</a></li>
-            <li><a href="#" class="btn-connect">Espace Investisseur</a></li>
-            <li class="language-selector">
-                <select id="language-select" class="lang-select">
-                    <option value="fr">🇫🇷 FR</option>
-                    <option value="en">🇬🇧 EN</option>
-                </select>
-            </li>
+            <li><a href="/login.html" class="btn-connect">Se Connecter</a></li>
         </ul>
     </nav>
 
-    <!-- Hero -->
+    <!-- Hero avec choix d'inscription -->
     <header class="hero">
         <div class="hero-content">
-            <h1>La Finance Agricole <br><span class="highlight">Réinventée</span>.</h1>
-            <p>Soutenez des projets agricoles réels, suivez les rendements via nos capteurs connectés, et participez à
-                l'agriculture de demain.</p>
+            <h1>Rejoignez <br><span class="highlight">Agrikura</span>.</h1>
+            <p>Inscrivez-vous sur notre liste d'attente en tant qu'agriculteur ou investisseur pour participer à l'agriculture de demain.</p>
             <div class="hero-buttons">
-                <a href="/marketplace.html" class="btn-primary">Explorer les Projets</a>
-                <a href="#concept" class="btn-secondary">Découvrir le Concept</a>
+                <button class="btn-primary" id="btn-choose-agriculteur">🌾 Je suis Agriculteur</button>
+                <button class="btn-secondary" id="btn-choose-investisseur">💰 Je suis Investisseur</button>
             </div>
         </div>
         <div class="hero-glow"></div>
     </header>
+
+    <!-- Section Formulaire d'inscription -->
+    <section id="inscription" class="inscription-section">
+        <div class="section-header">
+            <span class="section-tag">📝 Inscription</span>
+            <h2>Inscrivez-vous sur la <span class="highlight">Liste d'Attente</span></h2>
+            <p>Choisissez votre profil et remplissez le formulaire</p>
+        </div>
+
+        <!-- Toggle Agriculteur / Investisseur -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="toggle-agriculteur" data-role="agriculteur">🌾 Agriculteur</button>
+            <button class="toggle-btn" id="toggle-investisseur" data-role="investisseur">💰 Investisseur</button>
+        </div>
+
+        <!-- Formulaire Agriculteur -->
+        <div class="form-container" id="form-agriculteur">
+            <div class="auth-card form-card-wide">
+                <div class="auth-header">
+                    <h2>🌾 Inscription <span class="highlight">Agriculteur</span></h2>
+                    <p>Décrivez votre projet agricole et vos besoins en financement</p>
+                </div>
+                <form id="form-agri" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agri-nom">Nom *</label>
+                            <input type="text" id="agri-nom" placeholder="Kouadio" required maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="agri-prenom">Prénom *</label>
+                            <input type="text" id="agri-prenom" placeholder="Yao" required maxlength="100">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agri-contact">Contact (téléphone) *</label>
+                            <input type="tel" id="agri-contact" placeholder="+225 07 00 00 00" required maxlength="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="agri-email">Email <span class="optional">(facultatif)</span></label>
+                            <input type="email" id="agri-email" placeholder="votre@email.com" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agri-culture">Type de culture *</label>
+                            <select id="agri-culture" required>
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="Cacao">Cacao</option>
+                                <option value="Café">Café</option>
+                                <option value="Riz">Riz</option>
+                                <option value="Maïs">Maïs</option>
+                                <option value="Manioc">Manioc</option>
+                                <option value="Hévéa">Hévéa</option>
+                                <option value="Palmier à huile">Palmier à huile</option>
+                                <option value="Anacarde">Anacarde</option>
+                                <option value="Banane Plantain">Banane Plantain</option>
+                                <option value="Légumes">Légumes</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="agri-capacite">Capacité du champ *</label>
+                            <input type="text" id="agri-capacite" placeholder="Ex: 5 hectares" required maxlength="100">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="agri-besoin">Besoin en financement (FCFA) *</label>
+                        <input type="number" id="agri-besoin" placeholder="Ex: 2000000" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="agri-activite">Êtes-vous actuellement en activité ? *</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="agri-activite" value="true" required> Oui, je suis en activité</label>
+                            <label class="radio-label"><input type="radio" name="agri-activite" value="false"> Non, je ne suis pas en activité</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-btn" id="btn-submit-agri">
+                        📩 S'inscrire sur la liste d'attente
+                    </button>
+                    <div id="msg-agri" class="auth-message"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Formulaire Investisseur -->
+        <div class="form-container" id="form-investisseur" style="display: none;">
+            <div class="auth-card form-card-wide">
+                <div class="auth-header">
+                    <h2>💰 Inscription <span class="highlight">Investisseur</span></h2>
+                    <p>Indiquez votre capacité d'investissement pour être contacté en priorité</p>
+                </div>
+                <form id="form-invest" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inv-nom">Nom *</label>
+                            <input type="text" id="inv-nom" placeholder="Bamba" required maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="inv-prenom">Prénom *</label>
+                            <input type="text" id="inv-prenom" placeholder="Sophie" required maxlength="100">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inv-contact">Contact (téléphone) *</label>
+                            <input type="tel" id="inv-contact" placeholder="+225 07 00 00 00" required maxlength="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="inv-email">Email <span class="optional">(facultatif)</span></label>
+                            <input type="email" id="inv-email" placeholder="votre@email.com" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inv-capacite">Capacité à financer (FCFA) *</label>
+                        <input type="number" id="inv-capacite" placeholder="Ex: 5000000" required min="0">
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-btn" id="btn-submit-inv">
+                        📩 S'inscrire sur la liste d'attente
+                    </button>
+                    <div id="msg-inv" class="auth-message"></div>
+                </form>
+            </div>
+        </div>
+    </section>
 
     <!-- Le Concept -->
     <section id="concept" class="concept-section">
@@ -71,18 +179,18 @@
         <div class="concept-steps">
             <div class="step">
                 <div class="step-number">1</div>
-                <h3>Choisissez un Projet</h3>
-                <p>Parcourez la marketplace et sélectionnez une culture avec un rendement qui vous convient.</p>
+                <h3>Inscrivez-vous</h3>
+                <p>Rejoignez la liste d'attente en tant qu'agriculteur ou investisseur.</p>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
-                <h3>Créez votre Compte</h3>
-                <p>Inscrivez-vous gratuitement pour accéder à votre espace investisseur sécurisé.</p>
+                <h3>On Vous Contacte</h3>
+                <p>Notre équipe analyse votre profil et vous recontacte rapidement.</p>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
-                <h3>Investissez & Suivez</h3>
-                <p>Financez un projet, suivez les capteurs en temps réel et récoltez vos rendements.</p>
+                <h3>Lancez Votre Projet</h3>
+                <p>Agriculteurs : recevez un financement. Investisseurs : choisissez un projet et suivez vos rendements.</p>
             </div>
         </div>
     </section>
@@ -95,75 +203,10 @@
             <p>Des chiffres qui parlent d'eux-mêmes</p>
         </div>
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">🌱</div>
-                <div class="stat-number" data-target="1250">0</div>
-                <div class="stat-label">Hectares Cultivés</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">👨‍🌾</div>
-                <div class="stat-number" data-target="340">0</div>
-                <div class="stat-label">Agriculteurs Soutenus</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">💰</div>
-                <div class="stat-number" data-target="85000000">0</div>
-                <div class="stat-label">FCFA Investis</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">📈</div>
-                <div class="stat-number" data-target="13.5">0</div>
-                <div class="stat-label">% Rendement Moyen</div>
-            </div>
-        </div>
-        <div class="impact-highlights">
-            <div class="impact-item">
-                <span class="impact-icon">🌍</span>
-                <span class="impact-text">Réduction de 45% des émissions CO2</span>
-            </div>
-            <div class="impact-item">
-                <span class="impact-icon">💧</span>
-                <span class="impact-text">Économie de 30% d'eau grâce aux capteurs</span>
-            </div>
-            <div class="impact-item">
-                <span class="impact-icon">🏆</span>
-                <span class="impact-text">Certification Agriculture Durable</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Témoignages -->
-    <section id="testimonials" class="testimonials-section">
-        <div class="section-header">
-            <span class="section-tag">💬 Avis</span>
-            <h2>Ils Nous <span class="highlight">Font Confiance</span></h2>
-            <p>Retours d'expérience de nos partenaires</p>
-        </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Grâce à Agrikura, j'ai pu moderniser mon exploitation et doubler ma production."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar" style="background: #4CAF50;">K</div>
-                    <div><h4>Kouadio Adama</h4><p>Producteur de Cacao</p></div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Rendement de 15% la première année ! La meilleure décision financière que j'aie prise."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar" style="background: #2196F3;">S</div>
-                    <div><h4>Sophie Bamba</h4><p>Investisseuse</p></div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"La transparence et le suivi en temps réel rendent l'investissement rassurant."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar" style="background: #FF9800;">J</div>
-                    <div><h4>Jean-Marc Kouassi</h4><p>Analyste Financier</p></div>
-                </div>
-            </div>
+            <div class="stat-card"><div class="stat-icon">🌱</div><div class="stat-number" data-target="1250">0</div><div class="stat-label">Hectares Cultivés</div></div>
+            <div class="stat-card"><div class="stat-icon">👨‍🌾</div><div class="stat-number" data-target="340">0</div><div class="stat-label">Agriculteurs Soutenus</div></div>
+            <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-number" data-target="85000000">0</div><div class="stat-label">FCFA Investis</div></div>
+            <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-number" data-target="13.5">0</div><div class="stat-label">% Rendement Moyen</div></div>
         </div>
     </section>
 
@@ -207,61 +250,11 @@
         </div>
     </section>
 
-    <!-- Équipe & Partenaires -->
-    <section id="team" class="team-section">
-        <div class="section-header">
-            <span class="section-tag">👥 L'Équipe</span>
-            <h2>Notre <span class="highlight">Équipe</span></h2>
-            <p>Des experts passionnés au service de l'agriculture</p>
-        </div>
-        <div class="team-grid">
-            <div class="team-member">
-                <div class="member-photo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                <h3>Koffi Yao</h3>
-                <p class="member-role">CEO & Fondateur</p>
-                <p class="member-desc">Expert en agronomie avec 15 ans d'expérience</p>
-            </div>
-            <div class="team-member">
-                <div class="member-photo" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                <h3>Amina Touré</h3>
-                <p class="member-role">CTO</p>
-                <p class="member-desc">Spécialiste en IoT et technologies agricoles</p>
-            </div>
-            <div class="team-member">
-                <div class="member-photo" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                <h3>Mohamed Diallo</h3>
-                <p class="member-role">CFO</p>
-                <p class="member-desc">Expert financier spécialisé en agribusiness</p>
-            </div>
-        </div>
-        <div class="partners-section">
-            <h3>Nos <span class="highlight">Partenaires</span></h3>
-            <div class="partners-grid">
-                <div class="partner-card"><div class="partner-logo">🏛️</div><h4>Gouvernement</h4><p>Ministère de l'Agriculture</p><div class="certification-badge">Officiel</div></div>
-                <div class="partner-card"><div class="partner-logo">🌾</div><h4>UNICEF</h4><p>Sécurité alimentaire</p><div class="certification-badge">ONU</div></div>
-                <div class="partner-card"><div class="partner-logo">🔬</div><h4>INRA</h4><p>Recherche Agronomique</p><div class="certification-badge">Recherche</div></div>
-                <div class="partner-card"><div class="partner-logo">🏦</div><h4>BOA</h4><p>Banque Agricole</p><div class="certification-badge">Financement</div></div>
-                <div class="partner-card"><div class="partner-logo">🌍</div><h4>FAO</h4><p>ONU Alimentation</p><div class="certification-badge">International</div></div>
-                <div class="partner-card"><div class="partner-logo">📱</div><h4>MTN CI</h4><p>Solutions mobiles</p><div class="certification-badge">Tech</div></div>
-            </div>
-            <div class="certifications-showcase">
-                <h4>Nos <span class="highlight">Certifications</span></h4>
-                <div class="cert-grid">
-                    <div class="cert-item"><div class="cert-icon">🏅</div><div class="cert-info"><h5>ISO 14001</h5><p>Management environnemental</p></div></div>
-                    <div class="cert-item"><div class="cert-icon">🌿</div><div class="cert-info"><h5>Agriculture Bio</h5><p>Certification AB et Ecocert</p></div></div>
-                    <div class="cert-item"><div class="cert-icon">🤝</div><div class="cert-info"><h5>Fair Trade</h5><p>Commerce équitable</p></div></div>
-                    <div class="cert-item"><div class="cert-icon">🔒</div><div class="cert-info"><h5>GDPR</h5><p>Protection des données</p></div></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- FAQ -->
     <section id="faq" class="faq-section">
         <div class="section-header">
             <span class="section-tag">❓ Aide</span>
             <h2>Questions <span class="highlight">Fréquentes</span></h2>
-            <p>Tout ce que vous devez savoir sur Agrikura</p>
         </div>
         <div class="faq-container">
             <div class="faq-category">
@@ -274,33 +267,17 @@
                     <button class="faq-question">Comment sont calculés les rendements ? <span class="faq-icon">+</span></button>
                     <div class="faq-answer"><p>Les rendements sont estimés sur les données historiques et les conditions climatiques mesurées par nos capteurs IoT.</p></div>
                 </div>
-                <div class="faq-item">
-                    <button class="faq-question">Quand est-ce que je reçois mes gains ? <span class="faq-icon">+</span></button>
-                    <div class="faq-answer"><p>Les gains sont distribués à la fin du cycle de récolte, entre 6 et 12 mois selon la culture.</p></div>
-                </div>
             </div>
             <div class="faq-category">
-                <h3>🔒 Sécurité</h3>
+                <h3>🌾 Agriculteur</h3>
                 <div class="faq-item">
-                    <button class="faq-question">Mon investissement est-il sécurisé ? <span class="faq-icon">+</span></button>
-                    <div class="faq-answer"><p>Oui, chaque projet est couvert par une assurance agricole et suivi en temps réel via IoT.</p></div>
+                    <button class="faq-question">Comment s'inscrire en tant qu'agriculteur ? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Remplissez le formulaire d'inscription ci-dessus et notre équipe vous recontactera sous 48h.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">Quels modes de paiement acceptez-vous ? <span class="faq-icon">+</span></button>
-                    <div class="faq-answer"><p>Wave, Orange Money, MTN MoMo et Moov Money.</p></div>
+                    <button class="faq-question">Quels types de cultures sont acceptés ? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer"><p>Cacao, café, riz, maïs, manioc, hévéa, palmier à huile, anacarde, banane plantain, légumes et bien d'autres.</p></div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA final -->
-    <section class="cta-section">
-        <div class="cta-content">
-            <h2>Prêt à <span class="highlight">Investir</span> ?</h2>
-            <p>Rejoignez plus de 340 agriculteurs et des centaines d'investisseurs sur Agrikura.</p>
-            <div class="hero-buttons">
-                <a href="/register.html" class="btn-primary">Créer un Compte Gratuit</a>
-                <a href="/marketplace.html" class="btn-secondary">Voir les Projets</a>
             </div>
         </div>
     </section>
@@ -320,12 +297,6 @@
                 <a href="#faq">FAQ</a>
             </div>
             <div class="footer-links">
-                <h4>Compte</h4>
-                <a href="/register.html">Créer un Compte</a>
-                <a href="/login.html">Se Connecter</a>
-                <a href="/dashboard.html">Mon Espace</a>
-            </div>
-            <div class="footer-links">
                 <h4>Contact</h4>
                 <a href="mailto:contact@agrikura.ci">contact@agrikura.ci</a>
                 <a href="tel:+2250700000000">+225 07 00 00 00 00</a>
@@ -339,11 +310,10 @@
 
     <div id="notification-container" class="notification-container"></div>
 
-    <script src="multilang.js"></script>
     <script type="module">
-        import { updateNavAuth } from './auth.js';
+        import { supabase } from './db.js';
 
-        // Menu mobile
+        // Mobile menu
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         if (mobileBtn) {
@@ -359,7 +329,7 @@
             });
         }
 
-        // FAQ accordéon
+        // FAQ
         document.querySelectorAll('.faq-question').forEach(q => {
             q.addEventListener('click', function() {
                 const item = this.parentElement;
@@ -390,18 +360,120 @@
                 animate();
             });
         }
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) { animateCounters(); observer.unobserve(entry.target); }
             });
         }, { threshold: 0.5 });
-
         const statsSection = document.getElementById('statistics');
         if (statsSection) observer.observe(statsSection);
 
-        // Auth navbar
-        updateNavAuth();
+        // ====== TOGGLE FORMULAIRES ======
+        const toggleAgri = document.getElementById('toggle-agriculteur');
+        const toggleInv = document.getElementById('toggle-investisseur');
+        const formAgri = document.getElementById('form-agriculteur');
+        const formInv = document.getElementById('form-investisseur');
+
+        function showForm(role) {
+            if (role === 'agriculteur') {
+                formAgri.style.display = 'block';
+                formInv.style.display = 'none';
+                toggleAgri.classList.add('active');
+                toggleInv.classList.remove('active');
+            } else {
+                formAgri.style.display = 'none';
+                formInv.style.display = 'block';
+                toggleInv.classList.add('active');
+                toggleAgri.classList.remove('active');
+            }
+        }
+
+        toggleAgri.addEventListener('click', () => showForm('agriculteur'));
+        toggleInv.addEventListener('click', () => showForm('investisseur'));
+
+        // Hero buttons scroll to form
+        document.getElementById('btn-choose-agriculteur').addEventListener('click', () => {
+            showForm('agriculteur');
+            document.getElementById('inscription').scrollIntoView({ behavior: 'smooth' });
+        });
+        document.getElementById('btn-choose-investisseur').addEventListener('click', () => {
+            showForm('investisseur');
+            document.getElementById('inscription').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // ====== SOUMISSION AGRICULTEUR ======
+        document.getElementById('form-agri').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-agri');
+            const msg = document.getElementById('msg-agri');
+            btn.disabled = true;
+            btn.textContent = 'Envoi en cours...';
+            msg.textContent = '';
+            msg.className = 'auth-message';
+
+            const activiteValue = document.querySelector('input[name="agri-activite"]:checked');
+            if (!activiteValue) {
+                msg.textContent = '❌ Veuillez indiquer si vous êtes en activité.';
+                msg.classList.add('error');
+                btn.disabled = false;
+                btn.textContent = '📩 S\'inscrire sur la liste d\'attente';
+                return;
+            }
+
+            const { error } = await supabase.from('inscriptions_agriculteurs').insert({
+                nom: document.getElementById('agri-nom').value.trim(),
+                prenom: document.getElementById('agri-prenom').value.trim(),
+                contact: document.getElementById('agri-contact').value.trim(),
+                email: document.getElementById('agri-email').value.trim() || null,
+                type_culture: document.getElementById('agri-culture').value,
+                capacite_champs: document.getElementById('agri-capacite').value.trim(),
+                besoin_financement: parseInt(document.getElementById('agri-besoin').value) || 0,
+                en_activite: activiteValue.value === 'true'
+            });
+
+            if (error) {
+                msg.textContent = '❌ Erreur : ' + error.message;
+                msg.classList.add('error');
+                btn.disabled = false;
+                btn.textContent = '📩 S\'inscrire sur la liste d\'attente';
+            } else {
+                msg.innerHTML = '✅ <b>Inscription réussie !</b> Vous êtes sur notre liste d\'attente. Notre équipe vous contactera bientôt.';
+                msg.classList.add('success');
+                btn.textContent = '✅ Inscrit !';
+                e.target.reset();
+            }
+        });
+
+        // ====== SOUMISSION INVESTISSEUR ======
+        document.getElementById('form-invest').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-inv');
+            const msg = document.getElementById('msg-inv');
+            btn.disabled = true;
+            btn.textContent = 'Envoi en cours...';
+            msg.textContent = '';
+            msg.className = 'auth-message';
+
+            const { error } = await supabase.from('inscriptions_investisseurs').insert({
+                nom: document.getElementById('inv-nom').value.trim(),
+                prenom: document.getElementById('inv-prenom').value.trim(),
+                contact: document.getElementById('inv-contact').value.trim(),
+                email: document.getElementById('inv-email').value.trim() || null,
+                capacite_financement: parseInt(document.getElementById('inv-capacite').value) || 0
+            });
+
+            if (error) {
+                msg.textContent = '❌ Erreur : ' + error.message;
+                msg.classList.add('error');
+                btn.disabled = false;
+                btn.textContent = '📩 S\'inscrire sur la liste d\'attente';
+            } else {
+                msg.innerHTML = '✅ <b>Inscription réussie !</b> Vous êtes sur notre liste d\'attente. Nous vous contacterons très prochainement.';
+                msg.classList.add('success');
+                btn.textContent = '✅ Inscrit !';
+                e.target.reset();
+            }
+        });
     </script>
 </body>
 </html>
