@@ -110,6 +110,24 @@
             const user = await requireAuth();
             if (!user) return;
 
+            // Vérifier si l'utilisateur est admin
+            const { data: adminCheck } = await supabase
+                .from('admin_users')
+                .select('id')
+                .eq('user_id', user.id)
+                .maybeSingle();
+
+            if (!adminCheck) {
+                document.querySelector('.dashboard-page').innerHTML = `
+                    <div style="text-align:center;padding:100px 20px;">
+                        <h2 style="color:#e74c3c;">⛔ Accès refusé</h2>
+                        <p style="margin-top:10px;color:#666;">Vous n'avez pas les droits d'administration.</p>
+                        <a href="/" style="margin-top:20px;display:inline-block;color:var(--accent-color);">← Retour à l'accueil</a>
+                    </div>
+                `;
+                return;
+            }
+
             // Charger les données
             const [agriRes, invRes] = await Promise.all([
                 supabase.from('inscriptions_agriculteurs').select('*').order('created_at', { ascending: false }),
