@@ -12,6 +12,7 @@ export default defineConfig({
         register: resolve(__dirname, 'register.html'),
         marketplace: resolve(__dirname, 'marketplace.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
+        resetPassword: resolve(__dirname, 'reset-password.html'),
       }
     }
   },
