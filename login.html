@@ -94,7 +94,7 @@
             resetMsg.className = 'auth-message';
             try {
                 const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/reset-password.html'
+                    redirectTo: 'https://agrikura.farm/reset-password.html'
                 });
                 if (error) throw error;
                 resetMsg.textContent = '✅ Lien envoyé ! Vérifiez votre boîte mail.';
